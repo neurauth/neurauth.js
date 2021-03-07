@@ -2,6 +2,10 @@
   "name": "neurauth",
   "version": "1.0.0",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neurauth/neurauth.js.git"
+  },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "files": [
