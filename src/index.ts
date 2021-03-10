@@ -1,6 +1,6 @@
-import { add } from './add.js'
-import { subtract } from './subtract.js'
+import { getKey, setKey } from './auth.js'
+
 export {
-  add,
-  subtract
+  getKey,
+  setKey
 }

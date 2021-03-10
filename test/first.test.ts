@@ -1,8 +1,10 @@
-import { add } from "../lib/cjs";
+import { getKey, setKey } from "../lib/cjs";
 
-describe("Addction", () => {
-    it("should work", async () => {
-        let addction = add(1, 2);
-        expect(addction).toEqual(3);
+describe("Auth test", () => {
+    it("should save the key", async () => {
+        const myKey = "agoodkey";
+
+        setKey(myKey);
+        expect(myKey).toEqual(getKey());
     });
 });
