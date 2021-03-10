@@ -1,9 +1,17 @@
-let key = "";
-
-export const setKey = (newKey: string):void => {
-    key = newKey;
+type Credential = {
+    appId: string;
+    apiKey: string;
 }
 
-export const getKey = (): string => {
-    return key;
+let appCredential: Credential = {
+    appId: "",
+    apiKey: ""
+};
+
+export const setupCredentials = (credential: Credential): void => {
+    appCredential = credential;
+}
+
+export const getCredentials = (): Credential => {
+    return appCredential;
 }

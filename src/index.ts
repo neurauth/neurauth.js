@@ -1,6 +1,8 @@
-import { getKey, setKey } from './auth.js'
+import { setupCredentials, getCredentials } from './auth.js'
+import { list } from './executor.js';
 
 export {
-  getKey,
-  setKey
+  setupCredentials,
+  getCredentials,
+  list
 }
