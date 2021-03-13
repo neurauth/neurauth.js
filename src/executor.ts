@@ -1,7 +1,7 @@
 import got from "got";
 import { getCredentials } from "./auth"
 
-const NEURAUTH_URL = "https://neurauth-api.herokuapp.com";
+const NEURAUTH_URL = "http://api.neurauth.com";
 
 enum ActionType {
     insert = "insert",
