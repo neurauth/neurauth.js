@@ -32,6 +32,11 @@ export async function insert(entityName: string, data: any): Promise<any> {
     return callApi(callOptions);
 }
 
+export async function update(entityName: string, entityId: string, data: any): Promise<any> {
+    const callOptions = buildCallOptions(ActionType.update, { entityName: entityName, entityId: entityId, data: data });
+    return callApi(callOptions);
+}
+
 function buildCallOptions(action: ActionType, options: Options) {
     const base = {
         url: NEURAUTH_URL + "/api/v1/executor",
