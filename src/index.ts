@@ -1,5 +1,5 @@
 import { setupCredentials, getCredentials } from './auth.js'
-import { list, get, insert, update } from './executor.js';
+import { list, get, insert, update, remove } from './executor.js';
 
 export {
   setupCredentials,
@@ -7,5 +7,6 @@ export {
   list,
   insert,
   get,
-  update
+  update,
+  remove
 }

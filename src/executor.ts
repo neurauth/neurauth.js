@@ -37,6 +37,11 @@ export async function update(entityName: string, entityId: string, data: any): P
     return callApi(callOptions);
 }
 
+export async function remove(entityName: string, entityId: string): Promise<any> {
+    const callOptinos = buildCallOptions(ActionType.delete, { entityName: entityName, entityId: entityId });
+    return callApi(callOptinos);
+}
+
 function buildCallOptions(action: ActionType, options: Options) {
     const base = {
         url: NEURAUTH_URL + "/api/v1/executor",
