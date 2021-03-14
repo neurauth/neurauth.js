@@ -22,6 +22,11 @@ export async function list(entityName: string): Promise<any> {
     return callApi(callOptions);
 }
 
+export async function get(entityName: string, entityId: string): Promise<any> {
+    const callOptions = buildCallOptions(ActionType.get, { entityName: entityName, entityId: entityId });
+    return callApi(callOptions);
+}
+
 export async function insert(entityName: string, data: any): Promise<any> {
     const callOptions = buildCallOptions(ActionType.insert, { entityName: entityName, data: data });
     return callApi(callOptions);
@@ -36,24 +41,11 @@ function buildCallOptions(action: ActionType, options: Options) {
         json: {
             "action": action,
             "applicationId": getCredentials().appId,
-            "options": {
-                "entityName": options.entityName
-            }
+            "options": options
         }
     };
 
-    const withData = {
-        ...base,
-        json: {
-            ...base.json,
-            options: {
-                ...base.json.options,
-                data: options.data
-            }
-        }
-    }
-
-    return options.data ? withData : base;
+    return base;
 }
 
 function callApi(options: any): Promise<any> {
