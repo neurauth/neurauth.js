@@ -11,17 +11,23 @@ enum ActionType {
     update = "update"
 }
 
+type Options = {
+    entityName: string;
+    entityId?: string;
+    data?: string;
+}
+
 export async function list(entityName: string): Promise<any> {
-    const options = buildOptions(entityName, ActionType.list);
-    return callApi(options);
+    const callOptions = buildCallOptions(ActionType.list, { entityName: entityName });
+    return callApi(callOptions);
 }
 
 export async function insert(entityName: string, data: any): Promise<any> {
-    const options = buildOptions(entityName, ActionType.insert, data);
-    return callApi(options);
+    const callOptions = buildCallOptions(ActionType.insert, { entityName: entityName, data: data });
+    return callApi(callOptions);
 }
 
-function buildOptions(entity: string, action: ActionType, data: any = null) {
+function buildCallOptions(action: ActionType, options: Options) {
     const base = {
         url: NEURAUTH_URL + "/api/v1/executor",
         headers: {
@@ -29,19 +35,25 @@ function buildOptions(entity: string, action: ActionType, data: any = null) {
         },
         json: {
             "action": action,
-            "entityName": entity,
-            "applicationId": getCredentials().appId
+            "applicationId": getCredentials().appId,
+            "options": {
+                "entityName": options.entityName
+            }
         }
     };
 
     const withData = {
         ...base,
         json: {
-          ...base.json,
-          data: data}
+            ...base.json,
+            options: {
+                ...base.json.options,
+                data: options.data
+            }
+        }
     }
 
-    return data ? withData : base;
+    return options.data ? withData : base;
 }
 
 function callApi(options: any): Promise<any> {
