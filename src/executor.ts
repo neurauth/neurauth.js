@@ -1,5 +1,5 @@
 import got from "got";
-import { getCredentials } from "./auth"
+import { getCredentials } from "./setup"
 
 const NEURAUTH_URL = "http://api.neurauth.com";
 
