@@ -1,3 +1,5 @@
+export const NEURAUTH_URL = "http://api.neurauth.com";
+
 type Credential = {
     appId: string;
     apiKey: string;

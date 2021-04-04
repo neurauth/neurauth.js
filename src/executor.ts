@@ -1,7 +1,5 @@
 import got from "got";
-import { getCredentials } from "./setup"
-
-const NEURAUTH_URL = "http://api.neurauth.com";
+import { NEURAUTH_URL, getCredentials } from "./setup";
 
 enum ActionType {
     insert = "insert",
