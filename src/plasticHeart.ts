@@ -52,7 +52,7 @@ async function handlePulse(req: HeartRequest, res: Response, next: NextFunction)
 
     const verify: any = JSON.parse(await pulse(token));
     if (verify.success) {
-      req.currentUser = verify.data.user;
+      req.currentUser = verify.data;
       next();
     } else {
       return next(new UnauthorizedAccessError());
