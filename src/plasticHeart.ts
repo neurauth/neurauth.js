@@ -33,12 +33,12 @@ function isFreePassRoute(req: HeartRequest) {
 
 async function handleAuth(req: HeartRequest, res: Response, next: NextFunction) {
     if (isLoginRoute(req.path, req.method)) {
-        const body: any = await login(req.body.email, req.body.password);
+        const body: any = await login(req.body.login, req.body.password);
         return res.json(JSON.parse(body).data)
     }
 
     if (isSigninRoute(req.path, req.method)) {
-        const body: any = await signin(req.body.email, req.body.password, req.body.data);
+        const body: any = await signin(req.body.login, req.body.password, req.body.data);
         return res.json(JSON.parse(body).data)
     }
 }
@@ -50,7 +50,7 @@ async function handlePulse(req: HeartRequest, res: Response, next: NextFunction)
       return next(new UnauthorizedAccessError());
     }
 
-    const verify: any = await pulse(token);
+    const verify: any = JSON.parse(await pulse(token));
     if (verify.success) {
       req.currentUser = verify.data.user;
       next();
