@@ -14,6 +14,16 @@ type Options = {
     token?: string;
 }
 
+export async function pulse(token: string): Promise<any> {
+    const callOptions = buildCallOptions(ActionType.pulse, { token: token });
+    return callApi(callOptions);
+}
+
+export async function signin(login: string, password: string, data: any): Promise<any> {
+    const callOptions = buildCallOptions(ActionType.signin, { login: login, password: password, data: data });
+    return callApi(callOptions);
+}
+
 export async function login(login: string, password: string): Promise<any> {
     const callOptions = buildCallOptions(ActionType.login, { login: login, password: password });
     return callApi(callOptions);
