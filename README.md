@@ -35,7 +35,9 @@ neurauth.setupCredentials(credentials);
 
 Now you can operate your entities freely!
 
-## List objects
+
+## Data operations
+### List objects
 
 
 ```javascript
@@ -44,7 +46,7 @@ const neurauth = require('neurauth');
 await neurauth.list("entityName");
 ```
 
-## Get Object
+### Get Object
 
 
 ```javascript
@@ -54,7 +56,7 @@ await neurauth.get("entityName", "entityId");
 ```
 
 
-## Insert new object
+### Insert new object
 
 
 ```javascript
@@ -69,7 +71,7 @@ await neurauth.insert("entityName", data);
 ```
 
 
-## Update object
+### Update object
 
 
 ```javascript
@@ -83,7 +85,7 @@ await neurauth.update("entityName", "entityId", updatedData);
 ```
 
 
-## Remove object
+### Remove object
 
 
 ```javascript
@@ -91,6 +93,42 @@ const neurauth = require('neurauth');
 
 await neurauth.remove("entityName", "entityId");
 ```
+
+## Authentication
+
+With Neurauth <b>Plastic Heart</b>, we can enable authenticantion with just one line of code!
+
+### Express middleware
+```javascript
+const neurauth = require('neurauth');
+const express = require('express');
+
+var app = express();
+
+app.use(neurauth.plasticHeart());
+```
+
+Now your application has authentication routes! If you try a request to any configured route on your API, you will receive an `UnauthorizedAccessError`, that's because you need to be authenticated now. Your application is checking for the header `x-access-token`, but how can I get one? Creating an account and login in, check the next section!
+
+### Signup
+POST `/api/auth/signup`
+
+Our default user body is:
+```
+{
+    "email": string
+    "password: string
+}
+```
+But you can customise with new data and change the entity name, do as you wish!
+This options are availabe in the authentication section of you app page.
+
+
+### Login
+POST `/api/auth/login`
+
+Just send the user <b>email</b> and <b>password</b>, as response you will receive the user x-access-token, with this you will unlock your api with the current user data to be used.
+
 
 ## License
 

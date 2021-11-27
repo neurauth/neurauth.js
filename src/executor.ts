@@ -1,4 +1,5 @@
 import got from "got";
+import { UnauthorizedAccessError } from "./errors/UnauthorizedAccessError";
 import { NEURAUTH_URL, getCredentials } from "./setup";
 
 enum ActionType {
@@ -17,7 +18,7 @@ type Options = {
 
 export async function list(entityName: string): Promise<any> {
     const callOptions = buildCallOptions(ActionType.list, { entityName: entityName });
-    return callApi(callOptions);
+    return await callApi(callOptions);
 }
 
 export async function get(entityName: string, entityId: string): Promise<any> {
@@ -56,16 +57,13 @@ function buildCallOptions(action: ActionType, options: Options) {
     return base;
 }
 
-function callApi(options: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-        (async () => {
-            try {
-                const response = await got.post(options);
+async function callApi(options: any) {
+    try {
+        const response = await got.post(options);
 
-                resolve(response.body);
-            } catch (error) {
-                reject(error);
-            }
-        })();
-    });
+        return JSON.parse(response.body);
+    } catch (error: any) {
+        let body = JSON.parse(error.response.body);
+        throw new UnauthorizedAccessError(body.message);
+    }
 }
