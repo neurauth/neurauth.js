@@ -121,7 +121,7 @@ Our default user body is:
 }
 ```
 But you can customise with new data and change the entity name, do as you wish!
-This options are availabe in the authentication section of you app page.
+This options are availabe in the authentication section of your app page.
 
 
 ### Login
