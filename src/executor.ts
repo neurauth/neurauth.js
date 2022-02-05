@@ -1,4 +1,5 @@
 import got from "got";
+import { UnauthorizedAccessError } from "./errors/UnauthorizedAccessError";
 import { NEURAUTH_URL, getCredentials } from "./setup";
 
 enum ActionType {
@@ -12,31 +13,44 @@ enum ActionType {
 type Options = {
     entityName: string;
     entityId?: string;
-    data?: string;
+    data?: any;
 }
 
-export async function list(entityName: string): Promise<any> {
-    const callOptions = buildCallOptions(ActionType.list, { entityName: entityName });
+type Class<T> = new (...args: any[]) => T;
+
+function getEntityName<T>(schema: Class<T> | string): string {
+    let entityName = "";
+    if (typeof schema == "string") {
+        entityName = schema as string;
+    } else {
+        schema = schema as Class<T>
+        entityName = schema.name.toLowerCase();
+    }
+    return entityName;
+}
+
+export async function list<T>(schema: Class<T> | string): Promise<T[]> {
+    const callOptions = buildCallOptions(ActionType.list, { entityName: getEntityName(schema) });
+    return await callApi(callOptions);
+}
+
+export async function get<T>(schema: Class<T> | string, entityId: string): Promise<T> {
+    const callOptions = buildCallOptions(ActionType.get, { entityName: getEntityName(schema), entityId: entityId });
     return callApi(callOptions);
 }
 
-export async function get(entityName: string, entityId: string): Promise<any> {
-    const callOptions = buildCallOptions(ActionType.get, { entityName: entityName, entityId: entityId });
+export async function insert<T>(schema: Class<T> | string, data: any): Promise<T> {
+    const callOptions = buildCallOptions(ActionType.insert, { entityName: getEntityName(schema), data: data });
     return callApi(callOptions);
 }
 
-export async function insert(entityName: string, data: any): Promise<any> {
-    const callOptions = buildCallOptions(ActionType.insert, { entityName: entityName, data: data });
+export async function update<T>(schema: Class<T> | string, entityId: string, data: any): Promise<T> {
+    const callOptions = buildCallOptions(ActionType.update, { entityName: getEntityName(schema), entityId: entityId, data: data });
     return callApi(callOptions);
 }
 
-export async function update(entityName: string, entityId: string, data: any): Promise<any> {
-    const callOptions = buildCallOptions(ActionType.update, { entityName: entityName, entityId: entityId, data: data });
-    return callApi(callOptions);
-}
-
-export async function remove(entityName: string, entityId: string): Promise<any> {
-    const callOptinos = buildCallOptions(ActionType.delete, { entityName: entityName, entityId: entityId });
+export async function remove<T>(schema: Class<T> | string, entityId: string): Promise<T> {
+    const callOptinos = buildCallOptions(ActionType.delete, { entityName: getEntityName(schema), entityId: entityId });
     return callApi(callOptinos);
 }
 
@@ -56,16 +70,13 @@ function buildCallOptions(action: ActionType, options: Options) {
     return base;
 }
 
-function callApi(options: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-        (async () => {
-            try {
-                const response = await got.post(options);
+async function callApi(options: any) {
+    try {
+        const response = await got.post(options);
 
-                resolve(response.body);
-            } catch (error) {
-                reject(error);
-            }
-        })();
-    });
+        return JSON.parse(response.body);
+    } catch (error: any) {
+        let body = JSON.parse(error.response.body);
+        throw new UnauthorizedAccessError(body.message);
+    }
 }
