@@ -8,7 +8,7 @@ export type User = {
 };
 
 export type HeartRequest = Request & {
-    currentUser: User;
+    currentUser?: User;
 };
 
 const VERIFY_ROUTE = "/api/auth";
